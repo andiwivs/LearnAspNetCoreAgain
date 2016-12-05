@@ -9,28 +9,42 @@
 
 <body>
 
-    <div>
-        <h2>The World</h2>
-        <p>Hello, wabbit!</p>
-
-        <form>
-            <div>
-                <label>Date</label>
-                <input />
-            </div>
-
-            <div>
-                <label>Location</label>
-                <input />
-            </div>
-
-            <div><input type="submit" value="Add" /></div>
-        </form>
-
+    <div id="sidebar">
+        <img src="http://placehold.it/150x150" alt="headshot" class="headshot"/>
+        <span>Fred Smith</span>
+        <ul class="menu">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
     </div>
 
     <div>
-        &copy; 2016 The World Ltd
+
+        <div id="main">
+            <h2>The World</h2>
+            <p>Hello, wabbit!</p>
+
+            <form>
+                <div>
+                    <label>Date</label>
+                    <input />
+                </div>
+
+                <div>
+                    <label>Location</label>
+                    <input />
+                </div>
+
+                <div><input type="submit" value="Add" /></div>
+            </form>
+
+        </div>
+
+        <div id="footer">
+            &copy; 2016 The World Ltd
+        </div>
+
     </div>
 
 </body>
