@@ -3,6 +3,9 @@
     "ToAddress": "admin@test.com"
   },
   "ConnectionStrings": {
-    "WorldContextConnection":  "Server=(localdb)\\MSSQLLocalDB;Database=TheWorldDb;Trusted_Connection=true;MultipleActiveResultSets=true;"
+    "WorldContextConnection": "Server=(localdb)\\MSSQLLocalDB;Database=TheWorldDb;Trusted_Connection=true;MultipleActiveResultSets=true;"
+  },
+  "Keys": {
+    "BingKey": "AkT4Hd29jNlOrPWEqgAc9aFyo3PPkvqH1GrUJp-L34yy0hCLj7LkUxo5e6VgvPTC"
   }
 }
