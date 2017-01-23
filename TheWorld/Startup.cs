@@ -13,6 +13,9 @@ using TheWorld.Models;
 using Newtonsoft.Json.Serialization;
 using AutoMapper;
 using TheWorld.ViewModels;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace TheWorld
 {
@@ -52,6 +55,30 @@ namespace TheWorld
 
             services.AddDbContext<WorldContext>();
 
+            services.AddIdentity<WorldUser, IdentityRole>(config =>
+                {
+                    config.User.RequireUniqueEmail = true;
+                    config.Password.RequiredLength = 8;
+                    config.Cookies.ApplicationCookie.LoginPath = "/Auth/Login";
+                    config.Cookies.ApplicationCookie.Events = new CookieAuthenticationEvents
+                    {
+                        OnRedirectToLogin = async ctx =>
+                        {
+                            if (ctx.Request.Path.StartsWithSegments("/api") && ctx.Response.StatusCode == StatusCodes.Status200OK)
+                            {
+                                ctx.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                            }
+                            else
+                            {
+                                ctx.Response.Redirect(ctx.RedirectUri);
+                            }
+
+                            await Task.Yield(); // allows non-async code to satisfy async method signature
+                        }
+                    };
+                })
+                .AddEntityFrameworkStores<WorldContext>();
+
             services.AddScoped<IWorldRepository, WorldRepository>();
 
             services.AddTransient<WorldContextSeedData>();
@@ -60,7 +87,11 @@ namespace TheWorld
             services.AddLogging();
 
             services
-                .AddMvc()
+                .AddMvc(config =>
+                {
+                    if (_env.IsProduction())
+                        config.Filters.Add(new RequireHttpsAttribute());
+                })
                 .AddJsonOptions(config => config.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
         }
 
@@ -87,6 +118,8 @@ namespace TheWorld
             }
 
             app.UseStaticFiles();
+
+            app.UseIdentity();
 
             app.UseMvc(config =>
             {
